@@ -9,6 +9,7 @@ from pygame.constants import QUIT
 
 pygame.init()
 
+# 색 지정 
 black = (0, 0, 0)
 white = (255, 255, 255)
 red = (200, 0, 0)
@@ -20,11 +21,13 @@ NeonGreen = (149, 255, 0)
 NeonPurple = (233, 0, 255)
 NeonGgreen = (0, 249, 42)
 
+
+# 각 게임의 탈출 열쇠 상태를 False로 지정
 Runkey = False
 Shootkey = False
 Breakkey = False
 
-delay = 1000
+delay = 1000  # 화면 딜레이 변수 (ms)
 
 # 화면 크기
 display_width = 1000
@@ -35,47 +38,43 @@ gameDisplay = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption("오락실에서 살아남기")
 clock = pygame.time.Clock()
 
-# 배경 화면
+# 배경화면 함수 
 def background():
     gameDisplay.blit(pygame.image.load("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/arcade.jpg"), (0, 0))
 
-#열쇠
+# 열쇠 이미지 지정 
 key = pygame.image.load("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/key.png")
 key_size = key.get_rect().size
 
-#배경들
+# 이미지 지정 
 yellow = pygame.image.load("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/yellow.jpg")
 god = pygame.image.load("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/god.jpg")
 ending = pygame.image.load("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images//end.jpg")
 How = pygame.image.load("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/How.jpg")
-
-#문
 door0 = pygame.image.load("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/door0.jpg")
 door1 = pygame.image.load("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/door1.jpg")
 door2 = pygame.image.load("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/door2.jpg")
-
-#말풍선
 bubble = pygame.image.load("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/bubble.png")
 
-# 텍스트 설정
-def text_objects(text, font):
-    textSurface = font.render(text, True, white)
+# 텍스트 설정 함수 지정 
+def text_objects(text, font): 
+    textSurface = font.render(text, True, white) 
     return textSurface, textSurface.get_rect()
 
-#폰트
+#폰트 지정 
 smallText = pygame.font.SysFont(None, 20)
 bigText = pygame.font.SysFont(None, 50)
-korText = pygame.font.Font("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/NanumSoMiCe.ttf", 50)
-storyText = pygame.font.Font("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/NanumBaReunJeongSin.ttf", 40)
-nextText = pygame.font.Font("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/NanumSoMiCe.ttf", 70)
+korText = pygame.font.Font("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/NanumSoMiCe.ttf", 50)  # 글꼴, 크기
+storyText = pygame.font.Font("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/NanumBaReunJeongSin.ttf", 40)  # 글꼴, 크기  
+nextText = pygame.font.Font("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/NanumSoMiCe.ttf", 70) # 글꼴, 크기  
 
-# 버튼
+# 게임 시작화면 버튼 함수(블로그 참고)
 def button(txt, x, y, w, h, ic, ac, font, action=None):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
 
     if x + w > mouse[0] > x and y + h> mouse[1] > y:
-        pygame.draw.rect(gameDisplay, ac, (x, y, w, h))
+        pygame.draw.rect(gameDisplay, ac, (x, y, w, h))  # 버튼 그리기 
         if click[0] == 1 and action != None:
             action()        
     else: 
@@ -85,73 +84,81 @@ def button(txt, x, y, w, h, ic, ac, font, action=None):
     textRect.center = ((x+(w/2)), (y+(h/2)))
     gameDisplay.blit(textSurt, textRect)
 
-# 게임 종료
+# 게임 종료 함수 
 def quitgame():
     pygame.quit()
     sys.exit()
 
+# 스토리 화면 함수들
 def introScreen():
-    intro = True
+    intro = True  # 인트로 시작 
 
-    while intro:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                quitgame()
+    while intro:  # 인트로가 True일 동안 반복 
+        for event in pygame.event.get():   # 이벤트 지정 
+            if event.type == pygame.QUIT:  # 만약 나가기 이벤트(X를 눌렀거나 게임종료 버튼을 눌렀을 때)
+                quitgame()                 # 게임종료
         
-        gameDisplay.fill(black)
-        background()
-        largeText = pygame.font.Font("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/NanumSoMiCe.ttf", 140)
-        TextSurf, TextRect = text_objects("오락실에서 살아남기", largeText)
+        gameDisplay.fill(black)            # 화면을 검정으로 채우기 
+        background()                       # 배경화면 함수 불러옴 
+        # 화면 윗부분에 게임 제목 띄우기 
+        largeText = pygame.font.Font("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/NanumSoMiCe.ttf", 140)   
+        TextSurf, TextRect = text_objects("오락실에서 살아남기", largeText) 
         TextRect.center = ((display_width / 2), (display_height / 2 - 200))
         gameDisplay.blit(TextSurf, TextRect)
 
+        # 두 개의 버튼 생성(함수)
         button("게임시작", display_width * 0.3 - 100, 450, 200, 100, NeonGgreen, NeonGreen, korText, storyScreen0)
         button("게임종료", display_width * 0.7 - 100 , 450, 200, 100, NeonPink, NeonPurple, korText, quitgame)
 
-        pygame.display.update()
-        clock.tick(15)
+        pygame.display.update()  # 기본으로 해주는 작업
+        clock.tick(15)  
 
-def storyScreen0():#주인공 독백
-    story0 = True
-    timer = 0
+def storyScreen0(): # 주인공 독백 화면 
+    story0 = True  # 독백 화면 시작 
+    timer = 0      # 변수 초기화
 
     while story0:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quitgame()
-        timer += 1
-        gameDisplay.fill((255, 255, 255))
-        gameDisplay.blit(yellow, (0, 0))
 
+        timer += 1     # timer를 1씩 증가 
+        gameDisplay.fill(white)   # 화면을 흰색으로 채우기 
+        gameDisplay.blit(yellow, (0, 0))   # 화면에 yellow에 지정된 이미지 띄우기 
+
+        # 텍스트 부분 설정
         story0_text0 = storyText.render("윽... 여기가 어디지?", True, white)
         story0_text1 = storyText.render("어... 여긴 오락실?", True, white)
         story0_text2 = storyText.render("아.. 나 게임 싫어하는데 왜 오락실에 있는거지?", True, white)
         story0_text3 = storyText.render("그때 어디선가 목소리가 들렸다", True, white)
 
+        # 텍스트 위치 지정 
         story0_text_xpos = 180
         story0_text0_ypos = display_height * 0.28
         story0_text1_ypos = display_height * 0.38
         story0_text2_ypos = display_height * 0.48
         story0_text3_ypos = display_height * 0.58
-
-        if delay > timer:
+        
+        # 텍스트가 천천히 나오도록 지정 
+        if delay > timer:  # 첫 번째 줄 띄우기 
             gameDisplay.blit(story0_text0, (story0_text_xpos, story0_text0_ypos))
-        elif delay * 2 > timer >= delay:
+        elif delay * 2 > timer >= delay:  # 기존 첫 번째 줄 띄우기 + 두 번째 줄 띄우기 
             gameDisplay.blit(story0_text0, (story0_text_xpos, story0_text0_ypos))
             gameDisplay.blit(story0_text1, (story0_text_xpos, story0_text1_ypos))
-        elif delay * 3 > timer >= delay * 2:
+        elif delay * 3 > timer >= delay * 2:  # 기존 + 세 번째 줄
             gameDisplay.blit(story0_text0, (story0_text_xpos, story0_text0_ypos))
             gameDisplay.blit(story0_text1, (story0_text_xpos, story0_text1_ypos))
             gameDisplay.blit(story0_text2, (story0_text_xpos, story0_text2_ypos))
-        else:
+        else:  # 기존 + 네 번째 줄
             gameDisplay.blit(story0_text0, (story0_text_xpos, story0_text0_ypos))
             gameDisplay.blit(story0_text1, (story0_text_xpos, story0_text1_ypos))
             gameDisplay.blit(story0_text2, (story0_text_xpos, story0_text2_ypos))
             gameDisplay.blit(story0_text3, (story0_text_xpos, story0_text3_ypos))
-            button("다음", display_width - 250, display_height - 150, 200, 100, black, white, nextText, storyScreen)
+            button("다음", display_width - 250, display_height - 150, 200, 100, black, white, nextText, storyScreen)   # 다음 버튼 생성 
+        
         pygame.display.update()
 
-def storyScreen():#게임의 신
+def storyScreen(): # 게임의 신 발언부분 화면 
     story = True
     timer = 0
 
@@ -193,7 +200,7 @@ def storyScreen():#게임의 신
         
         pygame.display.update()
 
-def HowToPlay():
+def HowToPlay():  # 게임방법 화면 
     howrun = True
     timer = 0
     while howrun:
@@ -202,11 +209,12 @@ def HowToPlay():
                 quitgame()
         timer += 1
         gameDisplay.blit(How, (0, 0))
-        if timer > delay:
+        if timer > delay:  # 일정시간 지난 후 다음 버튼 띄우기 
             button("다음", display_width - 250, display_height - 150, 200, 100, black, white, nextText, door0Screen)
+        
         pygame.display.update()
 
-def door0Screen():
+def door0Screen():  # 첫번째 문 열쇠를 얻는 단계의 화면 
     door0run = True
     while door0run:
         for event in pygame.event.get():
@@ -214,10 +222,10 @@ def door0Screen():
                 quitgame()
         gameDisplay.fill((0, 0, 0))
         gameDisplay.blit(door0, (0, 0))
-        button("달리기게임", display_width * 0.3 - 200, display_height / 2 - 50, 200, 100, black, white, korText, RunGame)
+        button("달리기게임", display_width * 0.3 - 200, display_height / 2 - 50, 200, 100, black, white, korText, RunGame)  # 달리기게임 플레이버튼 띄우기 
         pygame.display.update()
 
-def RunGame():
+def RunGame():  # 달리기게임 코드 부분 
     screen_width = 1000
     screen_height = 800
     xpad = 200
@@ -495,7 +503,7 @@ def RunGame():
 
         pygame.display.update()
 
-def door1Screen():
+def door1Screen(): # 달리기게임 클리어한 후의 화면 
     door1run = True
     while door1run:
         for event in pygame.event.get():
@@ -503,10 +511,10 @@ def door1Screen():
                 quitgame()
         gameDisplay.fill((0, 0, 0))
         gameDisplay.blit(door1, (0, 0))
-        button("비행기게임", display_width * 0.5 - 130, display_height / 2 - 50, 270, 100, black, white, korText, shootingGame)
+        button("비행기게임", display_width * 0.5 - 130, display_height / 2 - 50, 270, 100, black, white, korText, shootingGame)  #비행기게임 플레이버튼 띄우기 
         pygame.display.update()
     
-def shootingGame():
+def shootingGame():  # 비행기게임 코드 부분 
     # 화면 크기
     screen_width = 1000 # 가로 크기
     screen_height = 800 # 세로 크기
@@ -533,7 +541,7 @@ def shootingGame():
     character_width = character_size[0] # 캐릭터의 가로 크기
     character_height = character_size[1] # 캐릭터의 세로 크기
 
-    #padding
+    # padding
     padding0 = pygame.image.load("C:/Users/k8581/OneDrive/바탕 화면/오락실에서 살아남기/images/black.png")
     padding0_xpos = 0
     padding0_ypos = 0
@@ -579,14 +587,14 @@ def shootingGame():
         enemy2Y = ypad
         enemy2Speed = 4
 
-        # 충돌처리 (미사일에 적이 맞았을 경우 True)
+        # 충돌처리 변수 (미사일에 적이 맞았을 경우 True)
         isShot1 = False
         isShot2 = False
 
-        shotCount = 0
+        shotCount = 0   # 점수
 
         end = False
-        endtimer = 60
+        endtimer = 60  # 60ms 
 
         onGame = True
         while onGame:
@@ -610,10 +618,10 @@ def shootingGame():
                         missileY = y - character_height
                         missileXY.append([missileX, missileY])
                     
-                    elif event.key == pygame.K_0:
-                        screen.blit(key, (((screen_width - key_size[0]) / 2), (screen_height - key_size[1]) / 2))
+                    elif event.key == pygame.K_0:  # 게임 테스트할 때 쓰인 부분(0을 누르면 바로 클리어됨)
+                        screen.blit(key, (((screen_width - key_size[0]) / 2), (screen_height - key_size[1]) / 2)) 
                         Shootkey = True
-                        end = True
+                        end = True  
 
 
                 if event.type in [pygame.KEYUP]:  # 키 떼면 멈춤
@@ -622,14 +630,15 @@ def shootingGame():
                     
                     if event.key == pygame.K_RIGHT or event.key == pygame.K_UP:
                         characterY = 0
-            screen.fill((0, 0, 0))
-            screen.blit(background, (xpad, ypad))  # 배경 생성
+
+            screen.fill((0, 0, 0))  # 화면 검정으로 채우기 
+            screen.blit(background, (xpad, ypad))  # 게임 배경 띄우기
 
             x += characterX
-            if x < xpad:  # 게임 밖으로 빠져나갈 경우
-                x = xpad
+            if x < xpad:  # 게임화면 밖으로 빠져나갈 경우
+                x = xpad  # 게임화면의 끝 부분으로 위치 변경 
             elif x > screen_width - character_width - xpad:  # 게임화면 밖으로 빠져나갈 경우
-                x = screen_width - character_width - xpad
+                x = screen_width - character_width - xpad    # 게임화면의 끝 부분으로 위치 변경 
 
             y += characterY
             if y < ypad:  # 게임 밖으로 빠져나갈 경우
@@ -639,15 +648,15 @@ def shootingGame():
             
             if y < enemy1Y + enemy1_height:  # 적1과 플레이어가 닿았을 경우
                 if(enemy1X > x and enemy1X < x + character_width) or (enemy1X + enemy1_width > x and enemy1X + enemy1_width < x + character_width):
-                    writeMessage("GAME OVER")
-                    sleep(1)
-                    onGame = False
+                    writeMessage("GAME OVER")  # 게임오버 글자 띄우기 
+                    sleep(1)  # 딜레이 
+                    onGame = False  # 게임종료
             
             if y < enemy2Y + enemy2_height:  # 적2와 플레이어가 닿았을 경우
                 if(enemy2X > x and enemy2X < x + character_width) or (enemy2X + enemy2_width > x and enemy2X + enemy2_width < x + character_width):
-                    writeMessage("GAME OVER")
-                    sleep(1)
-                    onGame = False
+                    writeMessage("GAME OVER")  # 게임오버 글자 띄우기 
+                    sleep(1)  # 딜레이 
+                    onGame = False  # 게임종료
 
 
             screen.blit(character, (x, y))  # 플레이어 생성
@@ -662,14 +671,14 @@ def shootingGame():
                         if bxy[0] > enemy1X and bxy[0] < enemy1X + enemy1_width:
                             missileXY.remove(bxy)  # 미사일 삭제
                             isShot1 = True
-                            shotCount += 10
+                            shotCount += 10  # 점수에 10점 추가 
                             
                     # 미사일이 적2를 맞췄을 경우
                     if bxy[1] < enemy2Y:
                         if bxy[0] > enemy2X and bxy[0] < enemy2X + enemy2_width:
                             missileXY.remove(bxy)  # 미사일 삭제
                             isShot2 = True
-                            shotCount += 20
+                            shotCount += 20  # 점수에 20점 추가 
 
 
                     if bxy[1] <= ypad:  # 미사일이 화면 밖을 벗어나면
@@ -678,7 +687,7 @@ def shootingGame():
                         except:
                             pass 
 
-            if len(missileXY) != 0:
+            if len(missileXY) != 0:  # 미사일 리스트의 길이가 0이 아닐 경우 (미사일 리스트에 요소가 있을 경우)
                 for bx, by in missileXY:  
                     screen.blit(missile, (bx, by))  # 미사일 생성
             
@@ -701,9 +710,9 @@ def shootingGame():
                 enemy2X = random.randrange(xpad, screen_width - enemy2_width - xpad)
                 enemy2Y = ypad
 
-            if isShot1:
-                screen.blit(explosion, (enemy1X, enemy1Y))
-                # 적 파괴 후 새로 그리기
+            if isShot1:  # 적1이 미사일에 맞았을 경우 
+                screen.blit(explosion, (enemy1X, enemy1Y))  # 적1 자리에 폭발하는 이미지 띄우기 
+                # 적 새로 그리기
                 enemy1Size = enemy1.get_rect().size  
                 enemy1_width = enemy1Size[0]
                 enemy1_height = enemy1Size[1]
@@ -711,9 +720,9 @@ def shootingGame():
                 enemy1Y = ypad
                 isShot1 = False  
             
-            if isShot2:
-                screen.blit(explosion, (enemy2X, enemy2Y))
-                # 적 파괴 후 새로 그리기
+            if isShot2:  # 적2이 미사일에 맞았을 경우 
+                screen.blit(explosion, (enemy2X, enemy2Y))  # 적2 자리에 폭발하는 이미지 띄우기 
+                # 적 새로 그리기
                 enemy2Size = enemy2.get_rect().size  
                 enemy2_width = enemy2Size[0]
                 enemy2_height = enemy2Size[1]
@@ -721,31 +730,31 @@ def shootingGame():
                 enemy2Y = ypad
                 isShot2 = False  
                 
-            
+            # 화면에 띄울 점수 요소 지정 
             game_font = pygame.font.SysFont("arial", 30, True, False)
             score = game_font.render("SCORE: " + str(shotCount), True, (255, 255, 255))
             screen.blit(score, (560 + xpad, 10 + ypad))
 
-            # 만약 시간이 0 이하이면 게임 종료
-            if shotCount >= 300:
-                screen.blit(key, (((screen_width - key_size[0]) / 2), (screen_height - key_size[1]) / 2))
-                Shootkey = True
-                end = True
+            if shotCount >= 300:  # 만약 점수가 300점 이상일 경우
+                screen.blit(key, (((screen_width - key_size[0]) / 2), (screen_height - key_size[1]) / 2)) # 화면 중간에 열쇠 띄우기
+                Shootkey = True  # 게임 종료 처리를 위해 변수들을 True로 돌림
+                end = True       # 게임 종료 처리를 위해 변수들을 True로 돌림
 
-            screen.blit(enemy1, (enemy1X, enemy1Y))
-            screen.blit(enemy2, (enemy2X, enemy2Y))
+            screen.blit(enemy1, (enemy1X, enemy1Y))  # 화면에 적1 띄우기 
+            screen.blit(enemy2, (enemy2X, enemy2Y))  # 화면에 적2 띄우기 
 
-            screen.blit(padding0, (padding0_xpos, padding0_ypos))
-            screen.blit(padding1, (padding1_xpos, padding1_ypos))
+            screen.blit(padding0, (padding0_xpos, padding0_ypos))  # 밑에 부분 검정으로 가려놓기(화면 크기가 바뀌면서 잉여 밑 부분을 가려놓음)
+            screen.blit(padding1, (padding1_xpos, padding1_ypos)) 
 
-            if end:
-                endtimer -= 1
-            if endtimer < 0:
-                if Shootkey:
-                    door2Screen()
-                else:
-                    door1Screen()
-                onGame = False
+            if end:   # end가 True일 경우
+                endtimer -= 1  # 약간의 딜레이 생성을 위함 
+            if endtimer < 0:   # endtimer가 음수가 되었을 때  
+                if Shootkey:   # 열쇠를 얻었을 경우
+                    door2Screen()  # 다음 화면으로 넘어가기
+                else:  # 열쇠를 얻지 못했을 경우
+                    door1Screen()  # 이전 화면으로 넘어가기
+               
+                onGame = False  # 게임 종료 
 
             pygame.display.update()  # 게임화면을 다시 그림
 
@@ -753,7 +762,7 @@ def shootingGame():
 
     runGame()
 
-def door2Screen():
+def door2Screen(): # 비행기게임 클리어한 후의 화면 
     door2run = True
     while door2run:
         for event in pygame.event.get():
@@ -764,7 +773,7 @@ def door2Screen():
         button("블록깨기", display_width * 0.7, display_height / 2 - 50, 220, 100, black, white, korText, Breakout)
         pygame.display.update()
 
-def Breakout():
+def Breakout(): # 블록깨기 게임 코드 부분 
     class Block:
         def __init__(self,col,rect,speed = 0):
             self.col = col
@@ -895,7 +904,7 @@ def Breakout():
     if __name__ == '__main__':
         main()
 
-def endScreen():
+def endScreen():  # 블록깨기 게임 클리어한 후의 화면: 엔딩 화면  
     endrun = True
     timer = 0
 
@@ -948,6 +957,6 @@ def endScreen():
         pygame.display.update()
 
 
-introScreen()
+introScreen()   # 게임시작 함수 불러옴
 
 
